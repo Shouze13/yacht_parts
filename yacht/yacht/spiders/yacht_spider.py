@@ -11,7 +11,6 @@ class YachtSpider(scrapy.Spider):
             brands = { " ".join(re.findall(r'\b[A-Za-z]+\b',j)) for j in i.css("div.menu_level_3 a::text").getall()}
         for category in response.css("div.menu_level_2.clearfix"):
             category_name = category.css("a::text").get()
-            # if category_name not in ["Брендовый раздел", "Каталог Osculati"]:
             for sub in category.css("div.menu_level_3 a::attr(href)"):
                 sub_page = response.urljoin(str(sub))   
                 yield scrapy.Request(sub_page, callback = self.parse_products, meta={"category":  category_name, "brands": brands})
